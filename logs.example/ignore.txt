@@ -1,0 +1,4 @@
+server1,mask1
+server1,mask2
+server2,mask1
+server2,mask2

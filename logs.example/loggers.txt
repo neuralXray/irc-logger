@@ -1,0 +1,14 @@
+server1
+nick
+password
+ident
+realname
+#channel1,#channel2
+
+server2
+nick
+password
+ident
+realname
+#channel1,#channel2
+
