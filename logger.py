@@ -582,6 +582,8 @@ def privmsg_commands_thread(connection, nick, message):
                     connection.send_raw(f'{command} {arguments}')
                     if (command == 'join') and (channel not in channels):
                         channels.append(channel)
+                    elif (command == 'part') and (channel in channels):
+                        channels.remove(channel)
                     elif command == 'privmsg':
                         sleep(2)
                         i = arguments.find(' ')
