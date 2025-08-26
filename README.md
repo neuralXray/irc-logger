@@ -1,9 +1,9 @@
 # IRC logger
 
-IRC bot to log multiple servers. Controllable with irc raw command in private messages, password required. Able to find nicks that have been connected with a given ident or ip.
+IRC bot to log multiple servers. Controllable with raw IRC commands via private messages, password required. Able to find nicknames associated with a given nick, ident or IP.
 
 
-## Installation Instructions
+## Installation commands
 
 ```
 mkdir irc-logger
@@ -21,17 +21,28 @@ git clone https://github.com/neuralXray/irc-nicks-channels.git
 ```
 
 
-## Start logging
+## Configuration and Setup
 
-Edit paths configuring location of working directory (script `loggers.py` and its dependencies), python virtual environment and logging text files at `loggers.config.example`. Finally, rename to `loggers.config`.
+1. Paths and passwords.
+    * Inside `loggers.config.example` file:
+        * Set the locations of the working directory, Python virtual environment, and log files.
+        * Change the example passwords:
+            * root: to control the bot with raw IRC commands.
+            * access: for searching nicknames.
+    * Rename the file to `loggers.config`.
 
-Edit configuration files inside `logs.example`, setting irc servers, nick, ident, realname and channels to log. Finally, rename the directory to `logs`.
+2. Server, user and channels
+    * Navigate to `logs.example` directory and edit the following files according to their template structure:
+        * `loggers.txt`: Configure IRC servers, setting the bot's nick, ident and realname for each, along with the channels to log.
+        * `ignore.txt`: Specify user masks to ignore. Write each one on a new line, preceded by the server address and a comma.
+        * `ignore_msg.txt`: Add regular expressions to ignore matching private messages per server.
 
-Start logging executing:
+    * Rename the directory to `logs`. This directory can be moved anywhere, as long as its path is updated in `loggers.config`.
 
-```
-python3 loggers.py
-```
+3. Start logging by executing:
+    ```
+    python3 loggers.py
+    ```
 
 
 ## Support the developer
