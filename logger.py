@@ -585,7 +585,6 @@ def privmsg_commands_thread(connection, nick, message):
                     elif (command == 'part') and (channel in channels):
                         channels.remove(channel)
                     elif command == 'privmsg':
-                        sleep(2)
                         i = arguments.find(' ')
                         if i == -1:
                             target = arguments
