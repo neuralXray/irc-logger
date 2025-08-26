@@ -340,10 +340,8 @@ def welcome_thread(connection):
             connection.send_raw(f'join {channel}')
         except ServerNotConnectedError:
             break
-        sleep(5)
-        if not cannot_join[channel]:
-            while (not disconnected) and (not finished[channel]):
-                sleep(10)
+        while (not disconnected) and (not cannot_join[channel]) and (not finished[channel]):
+                sleep(1)
         del cannot_join[channel]
         del finished[channel]
 
