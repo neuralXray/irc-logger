@@ -974,8 +974,6 @@ class IRCBot(irc.client.SimpleIRCClient):
                 break
         if (not found) and (nick in hosts.keys()):
             del hosts[nick]
-        if channel in finished.keys():
-            finished[channel] = True
 
         log = f'*\t{user} has left'
         logging(log, channel)
@@ -992,6 +990,8 @@ class IRCBot(irc.client.SimpleIRCClient):
                     if (not found) and (nick in hosts.keys()):
                         del hosts[nick]
                 del nicks[channel]
+            if channel in finished.keys():
+                finished[channel] = True
             #print(f'{datetime.now().strftime(date_time_format)} ending logging {server} {channel}')
             #Thread(target=join_channel_thread, args=(connection, channel, (60 + 1)*60)).start()
             logging(f'*\tENDING LOGGING\n', channel)
