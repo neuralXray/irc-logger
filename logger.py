@@ -1035,7 +1035,12 @@ class IRCBot(irc.client.SimpleIRCClient):
         if channel in nicks.keys():
             if target not in nicks[channel]:
                 target = decode_string(target)
-            nicks[channel].remove(target)
+            if target in nicks[channel]:
+                nicks[channel].remove(target)
+            else:
+                print(date_time, server, channel, f'*\t{nick} has kicked {target} ({reason})')
+        else:
+            print(date_time, server, channel, f'*\t{nick} has kicked {target} ({reason})')
         found = False
         for c in nicks.keys():
             if target in nicks[c]:
