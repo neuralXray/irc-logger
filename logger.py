@@ -1143,7 +1143,7 @@ class IRCBot(irc.client.SimpleIRCClient):
             targets = event.arguments[1:]
             log = f'*\t{nick} sets mode(s) {mode} on {" ".join(targets)}'
             for target in targets:
-                if bool(search(r'\+b+$', mode)) and \
+                if bool(search(r'\+b+$', mode)) and (not target.startswith('m:')) and \
                    ('(' not in target) and (')' not in target) and ('+' not in target):
                     target = target.replace('\\', '\\\\').replace('.', r'\.').replace('?', '.')\
                                    .replace('*', '.*').replace('[', r'\[').replace('|', r'\|')
@@ -1153,7 +1153,7 @@ class IRCBot(irc.client.SimpleIRCClient):
                             banned_in_channels.append(channel)
                     except:
                         print(target)
-                elif bool(search('-b+$', mode)) and \
+                elif bool(search('-b+$', mode)) and (not target.startswith('m:')) and \
                      ('(' not in target) and (')' not in target) and ('+' not in target):
                     target = target.replace('\\', '\\\\').replace('.', r'\.').replace('?', '.')\
                                    .replace('*', '.*').replace('[', r'\[').replace('|', r'\|')
