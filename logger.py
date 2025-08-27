@@ -1173,17 +1173,34 @@ class IRCBot(irc.client.SimpleIRCClient):
             reason = 'Client exited'
 
         if not disconnected:
+            disconnected = True
             log = f'*\t{my_nick}!{my_ident}@{my_ip} has quit ({reason})'
             for channel in nicks.keys():
                 logging(log, channel)
             end_logging(reason)
 
-        disconnected = True
         if reason != 'Changing servers':
             #print(f'\n{datetime.now().strftime(date_time_format)} DISCONNECTED from {server} ({reason})\n')
             if (not reconnecting) and exists(logging_dir):
                 reconnecting = True
                 Thread(target=reconnect_thread, args=(connection,)).start()
+
+
+    def error(self, connection, event):
+        global disconnected, reconnecting
+        reason = event.target
+
+        if not disconnected:
+            disconnected = True
+            log = f'*\t{my_nick}!{my_ident}@{my_ip} has quit ({reason})'
+            for channel in nicks.keys():
+                logging(log, channel)
+            end_logging(reason)
+
+        #print(f'\n{datetime.now().strftime(date_time_format)} DISCONNECTED from {server} ({reason})\n')
+        if (not reconnecting) and exists(logging_dir):
+            reconnecting = True
+            Thread(target=reconnect_thread, args=(connection,)).start()
 
 
     def event_396(self, connection, event):
@@ -1237,6 +1254,7 @@ if __name__ == '__main__':
     connection.add_global_handler('mode', bot.mode)
 
     connection.add_global_handler('disconnect', bot.disconnect)
+    connection.add_global_handler('error', bot.error)
 
     connection.add_global_handler('396', bot.event_396)
     connection.add_global_handler('926', bot.event_926)
