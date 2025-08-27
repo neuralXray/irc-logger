@@ -432,24 +432,19 @@ def find_nicks_now_thread(connection, nick_send, nick_search, ident_search, ip_s
     clones_nicks = []
     clones = []
     if ip_search.endswith('.79j.0Ar7OI.virtual') and (server == 'irc.chathispano.com'):
-        match_case = 0
+        printouts = [f'*\t[{nick_search}] Unable to find clone(s) (IRCCloud)']
     else:
-        match_case = 1
-    for n, h in hosts.copy().items():
-        k = h.find('@')
-        ident = h[h.find('!') + 1:k]
-        ip = h[k + 1:]
-        if match_case == 0:
-            match = (ip == ip_search) and (ident == ident_search)
+        for n, h in hosts.copy().items():
+            k = h.find('@')
+            ident = h[h.find('!') + 1:k]
+            ip = h[k + 1:]
+            if (ip == ip_search) and (n.lower() != nick_search.lower()) and (n not in clones_nicks):
+                clones_nicks.append(n)
+                clones.append(n + '!' + ident)
+        if clones:
+            printouts = [f'*\t[{nick_search}] Clone(s): ' + ', '.join(clones)]
         else:
-            match = ip == ip_search
-        if match and (n.lower() != nick_search.lower()) and (n not in clones_nicks):
-            clones_nicks.append(n)
-            clones.append(n + '!' + ident)
-    if clones:
-        printouts = [f'*\t[{nick_search}] Clone(s): ' + ', '.join(clones)]
-    else:
-        printouts = []
+            printouts = []
 
     present_in_channels = []
     for channel in nicks.keys():
