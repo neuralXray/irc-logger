@@ -619,7 +619,7 @@ def send_raw(connection, command):
 def send_privmsg(connection, target, printout):
     try:
         connection.send_raw(f'privmsg {target} {printout}')
-        logging(f'<{my_nick}> {printout}', target)
+        logging(f'\t<{my_nick}> {printout}', target)
     except ServerNotConnectedError:
         pass
 
