@@ -1188,10 +1188,11 @@ class IRCBot(irc.client.SimpleIRCClient):
 
     def error(self, connection, event):
         global disconnected, reconnecting
-        reason = event.target
 
         if not disconnected:
             disconnected = True
+            reason = event.target
+            reason = reason[reason.find('[') + 1:reason.rindex(']')]
             log = f'*\t{my_nick}!{my_ident}@{my_ip} has quit ({reason})'
             for channel in nicks.keys():
                 logging(log, channel)
