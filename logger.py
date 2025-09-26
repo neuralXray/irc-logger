@@ -577,11 +577,7 @@ def privmsg_commands_thread(connection, nick, message):
                     command = 'join'
                 try:
                     connection.send_raw(f'{command} {arguments}')
-                    if (command == 'join') and (channel not in channels):
-                        channels.append(channel)
-                    elif (command == 'part') and (channel in channels):
-                        channels.remove(channel)
-                    elif command == 'privmsg':
+                    if command == 'privmsg':
                         i = arguments.find(' ')
                         if i == -1:
                             target = arguments
@@ -592,6 +588,11 @@ def privmsg_commands_thread(connection, nick, message):
                         target = target.lower()
                         log = f'\t<{my_nick}> {message}'
                         logging(log, target)
+                    elif (arguments[0] == '#') and (' ' not in arguments):
+                        if (command == 'join') and (arguments not in channels):
+                            channels.append(arguments)
+                        elif (command == 'part') and (arguments in channels):
+                            channels.remove(arguments)
                 except:
                     pass
 
