@@ -837,9 +837,7 @@ class IRCBot(irc.client.SimpleIRCClient):
         global nicks
         channel = event.arguments[1].lower()
 
-        channel_nicks = event.arguments[2].split(' ')
-        channel_nicks = [nick[1:] if bool(nick) and ((nick[0] == '@') or (nick[0] == '+')) else nick
-                         for nick in channel_nicks]
+        channel_nicks = [nick.lstrip('@+') for nick in split(' +', event.arguments[2])]
 
         if channel in nicks.keys():
             nicks[channel] = list(set(nicks[channel] + channel_nicks))
