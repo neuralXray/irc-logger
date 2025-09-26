@@ -492,6 +492,7 @@ def find_nicks_history_thread(connection):
 
 def privmsg_commands_thread(connection, nick, message):
     global access_nicks, search_queue, reconnecting, channels
+    message = message.rstrip()
     i = message.find(' ')
     if i == -1:
         command = message
@@ -510,7 +511,7 @@ def privmsg_commands_thread(connection, nick, message):
             printout = 'identified with ROOT level'
             send_privmsg(connection, nick, printout)
 
-    elif (command == 'HELP') and (arguments.replace(' ', '') == ''):
+    elif command == 'HELP':
         if nick in access_nicks.keys():
             printout = 'SEARCH nick ident ip [months=1]'
             send_privmsg(connection, nick, printout)
@@ -594,14 +595,14 @@ def privmsg_commands_thread(connection, nick, message):
                 except:
                     pass
 
-    elif (command == 'LIST') and (arguments.replace(' ', '') == '') and (nick in root_nicks.keys()):
+    elif (command == 'LIST') and (nick in root_nicks.keys()):
         printout = 'nick(s) with ACCESS level: ' + ', '.join(access_nicks.keys())
         send_privmsg(connection, nick, printout)
         sleep(2)
         printout = 'nick(s) with ROOT level: ' + ', '.join(root_nicks.keys())
         send_privmsg(connection, nick, printout)
 
-    elif (command == 'LOAD_CONFIG') and (arguments.replace(' ', '') == '') and (nick in root_nicks.keys()):
+    elif (command == 'LOAD_CONFIG') and (nick in root_nicks.keys()):
         load_config()
 
 
