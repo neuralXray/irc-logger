@@ -344,6 +344,7 @@ def welcome_thread(connection):
                 sleep(1)
         del cannot_join[channel]
         del finished[channel]
+        sleep(5)
 
 
 def check_connected_thread(connection, client):
