@@ -192,7 +192,6 @@ for month_dir in sorted(listdir(log_dir)):
                 channel_dirs[chan] = f'{log_dir}{month_dir}/{chan}'
 
 date_times = {}
-year_month = datetime.now().strftime('%Y-%m')
 for chan, directory in channel_dirs.copy().items():
     last_line = read_last_line(directory)
     if last_line == '\n':
@@ -201,19 +200,16 @@ for chan, directory in channel_dirs.copy().items():
         d = last_line[:len_date_time - 1]
         date_time = datetime.strptime(d, date_time_format)
         date_times[d] = date_time
-        channel_dirs[chan] = f'{log_dir}{year_month}/{chan}'
 
 if channel_dirs:
     load_config()
     date_time = sorted(date_times.keys(), key=lambda d: date_times[d])[-1]
     reason = 'Ping timeout: 120 seconds'
     log = f'{date_time} *\tENDING LOGGING ({reason})\n\n'
-    log_chan = f'{date_time} *\t{my_nick} has quit ({reason})\n{date_time} *\tENDING LOGGING\n\n'
+    log_chan = f'{date_time} *\t{my_nick}!{my_ident}@{my_ip} has quit ({reason})\n' \
+               f'{date_time} *\tENDING LOGGING\n\n'
     for chan, directory in channel_dirs.items():
-        if exists(directory):
-            file = open(directory, 'a')
-        else:
-            file = open(directory, 'w')
+        file = open(directory, 'a')
         if chan == '.log':
             file.write(log)
         else:
