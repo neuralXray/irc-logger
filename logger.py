@@ -185,11 +185,12 @@ def read_last_line(filename):
     return line
 
 channel_dirs = {}
-for month_dir in sorted(listdir(log_dir)):
+for month_dir in reversed(sorted(listdir(log_dir))):
     if isdir(f'{log_dir}{month_dir}'):
         for chan in listdir(f'{log_dir}{month_dir}'):
             if (chan[0] == '#') or (chan == '.log'):
                 channel_dirs[chan] = f'{log_dir}{month_dir}/{chan}'
+        break
 
 date_times = {}
 for chan, directory in channel_dirs.copy().items():
