@@ -168,8 +168,12 @@ def load_config():
 
 # Fix end logging if needed
 def read_last_line(filename):
-    # Works if filename isn't empty and if all lines end with newline
+    # Works if filename is empty or if all lines end with newline
     file = open(filename, 'rb+')
+    file.seek(0, 2)
+    if file.tell() < 2:
+        file.close()
+        return ''
     file.seek(-2, 2)
     while bool(file.tell()) and (file.read(1) != b'\n'):
         file.seek(-2, 1)
@@ -185,11 +189,12 @@ def read_last_line(filename):
     return line
 
 channel_dirs = {}
-for month_dir in sorted(listdir(log_dir)):
+for month_dir in reversed(sorted(listdir(log_dir))):
     if isdir(f'{log_dir}{month_dir}'):
         for chan in listdir(f'{log_dir}{month_dir}'):
             if (chan[0] == '#') or (chan == '.log'):
                 channel_dirs[chan] = f'{log_dir}{month_dir}/{chan}'
+        break
 
 date_times = {}
 for chan, directory in channel_dirs.copy().items():
@@ -244,6 +249,10 @@ def logging(log, channel):
     year_month_log_dir = log_dir + year_month + '/'
     if not exists(year_month_log_dir):
         mkdir(year_month_log_dir)
+        for chan in nicks.keys():
+            channel_log_dir = year_month_log_dir + chan.lower() + '.log'
+            file = open(channel_log_dir, 'w')
+            file.close()
 
     if channel in root_nicks.keys():
         channel = '.' + channel
